@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<script src="../js/vendor/d3.js"></script>
+	</head>
+	<body>
+		<script>
+			var dataset = [5, 10, 15, 20, 25];
+
+			d3.select("body").selectAll("p")
+					.data(dataset)
+					.enter()
+					.append("p")
+					.text(function(d){
+						return d;
+					});
+		
+		//06_creating_paragraphs_counting.html
+			d3.select("body").selectAll("h")
+					.data(dataset)
+					.enter()
+					.append("p")
+					.text(function(d){
+						return "fuck you"+d;
+					});
+					
+		//07_creating_paragraphs_with_style.html
+			d3.select("body").selectAll("h1")
+					.data(dataset)
+					.enter()
+					.append("p")
+					.text(function(d){
+						return "fuck you"+d;
+					})
+					.style("color","red");
+		//08_creating_paragraphs_with_style_functions.html
+			d3.select("body").selectAll("h1")
+					.data(dataset)
+					.enter()
+					.append("p")
+					.text(function(d){
+						return "fuck you"+d;
+					})
+					.style("color",function(d2){
+						if(d2>10){
+							return "red";
+						}else{
+							return "green";
+						}
+						
+					});
+		</script>
+	</body>
+</html>
