@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>HTML5 mp3播放器</title>
+
+		<script type="text/javascript">
+			(function(window) {
+				var zImgUtil = window.zImgUtil || {};
+
+				var handler = function(event, imgHolderDomId, maxWidth) {
+					if (!event) {
+						return;
+					}
+
+					event.stopPropagation();
+					event.preventDefault();
+
+					if (event.type == "drop") {
+						var data = event.dataTransfer;
+						if (!data) {
+							return;
+						}
+						if (!data.files || !data.files[0]) {
+							return;
+						}
+						var file = data.files[0];
+						var fileReader = new FileReader();
+						fileReader.onloadend = function() {
+							var data = this.result.substr(this.result.indexOf(',') + 1);
+							var imgId = "img" + new Date().getTime();
+							document.getElementById(imgHolderDomId).innerHTML = "<img id='" + imgId + "' src='data:" + file.type + ";base64," + data + "' />";
+							if (maxWidth) {
+								var imgDom = document.getElementById(imgId);
+								if (maxWidth < imgDom.width) {
+									var newHeight = maxWidth * imgDom.height / imgDom.width;
+									imgDom.style.width = maxWidth;
+									imgDom.style.height = newHeight;
+								}
+							}
+						};
+						fileReader.readAsDataURL(file);
+					}
+				};
+
+				zImgUtil.dropAndShow = function(dropOnDomId, imgHolderDomId, maxWidth) {
+					var srcDom = document.getElementById(dropOnDomId);
+					var handlerWrapper = function(event) {
+						handler(event, imgHolderDomId, maxWidth);
+					};
+					srcDom.addEventListener("drop", handlerWrapper, false);
+					srcDom.addEventListener("dragover", handlerWrapper, false);
+					srcDom.addEventListener("dragenter", handlerWrapper, false);
+				};
+
+				window.zImgUtil = zImgUtil;
+			})(window);
+
+			function init() {
+				zImgUtil.dropAndShow("srcLabel", "imgDiv", 200);
+			}
+		</script>
+	</head>
+	<body onload="init()">
+		<div id="srcLabel" style="border: 1px solid green;min-height: 100px;">
+			<label id="srcLabel">拖进框里面试试看</label>
+			<div id="imgDiv"></div>
+		</div>
+	</body>
+</html>

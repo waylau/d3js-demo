@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>China Map中国地图</title>
+		<script src="../js/vendor/d3.js"></script>
+		<style type="text/css">
+ 
+			path:hover{
+			  fill:red;
+			}​
+		</style>
+	</head>
+	<body>
+		<script type="text/javascript">
+			var width = 960, height = 500;
+
+			var svg = d3.select("body")
+				.append("svg")
+				.attr("width", width)
+				.attr("height", height);
+
+			var projection = d3.geo.mercator().translate([width / 2, height / 2]).center([105, 38]).scale(550);
+
+			var path = d3.geo.path().projection(projection);
+
+			d3.json("china.geo.json", function(json) {
+
+				svg.selectAll("path")
+					.data(json.features)
+					.enter()
+					.append("path")
+					.attr("d", path)
+					.style("fill", "steelblue")
+					.style("stroke-width", "1")
+					.style("stroke", "white")
+					;
+
+			});
+
+		</script>
+	</body>
+</html>
